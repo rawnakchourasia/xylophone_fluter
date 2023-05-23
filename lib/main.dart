@@ -6,18 +6,41 @@ void main() => runApp(const XylophoneApp());
 class XylophoneApp extends StatelessWidget {
   const XylophoneApp({super.key});
 
+  void playSound(int num) async {
+    final player = AudioPlayer();
+    await player.play(AssetSource('note$num.wav'));
+  }
+
+  Widget buildKey({required Color color, int? soundNumber}) {
+    return Expanded(
+      child: FloatingActionButton(
+        backgroundColor: color,
+        onPressed: () async {
+          playSound(soundNumber!);
+        },
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(0.0))),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.black,
         body: SafeArea(
-          child: Center(
-            child: FloatingActionButton(
-                onPressed: () async {
-                  final player = AudioPlayer();
-                  await player.play(AssetSource('note1.wav'));
-                },
-                child: const Text('Click Me!')),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              buildKey(color: Colors.red, soundNumber: 1),
+              buildKey(color: Colors.orange, soundNumber: 2),
+              buildKey(color: Colors.yellow, soundNumber: 3),
+              buildKey(color: Colors.green, soundNumber: 4),
+              buildKey(color: Colors.teal, soundNumber: 5),
+              buildKey(color: Colors.blue, soundNumber: 6),
+              buildKey(color: Colors.purple, soundNumber: 7),
+            ],
           ),
         ),
       ),
